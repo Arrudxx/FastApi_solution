@@ -1,12 +1,24 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from models import Usuario
+from dependencies import pegar_sessao
 
 auth_router = APIRouter(prefix='/auth', tags=['Auth'])
 
 @auth_router.get('/')
-async def authenticate():
+async def home():
     """
     Essa é a rota padrão de autenticação do nosso sistema.
     """
-
     return {'mensagem': 'Você acessou a rota padrão de autenticação', 'autenticado':False}
 
+@auth_router.post('/criar_conta')
+async def criar_conta(email: str, senha:str, nome: str, session = Depends(pegar_sessao)):
+    usuario = session.query(Usuario).filter(Usuario.email == email).first()
+    if usuario:
+        #Já existe um usuario com este email
+        return {'mensagem': 'já existe um usuário com este email'}
+    else:
+        novo_usuario = Usuario(nome, email, senha)
+        session.add(novo_usuario)
+        session.commit()
+        return {'mensagem': 'usuario cadastrado com sucesso'}
