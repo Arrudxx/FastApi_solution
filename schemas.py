@@ -10,3 +10,10 @@ class UsuarioSchema(BaseModel):
 
     class Config:
         from_attibutes: True
+
+class PedidoSchema(BaseModel):
+    usuario: int
+
+    class Config:
+        from_attibutes: True
+    
