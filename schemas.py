@@ -12,8 +12,14 @@ class UsuarioSchema(BaseModel):
         from_attibutes: True
 
 class PedidoSchema(BaseModel):
-    usuario: int
+    id_usuario: int
 
     class Config:
         from_attibutes: True
     
+class LoginSchema(BaseModel):
+    email: str
+    senha: str
+
+    class Config:
+        from_attibutes: True
